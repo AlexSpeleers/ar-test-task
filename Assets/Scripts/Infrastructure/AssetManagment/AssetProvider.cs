@@ -46,6 +46,7 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 					SaveBytesToFile($"{Application.streamingAssetsPath}{imageDescriptionStorage.GetPathByModelName(obj.name)}", imageArray);
 				}
 			}
+			callback?.Invoke(imageDescriptionStorage);
 			return imageDescriptionStorage;
 		}
 

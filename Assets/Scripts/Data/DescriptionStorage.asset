@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be6dd55cdc9edc24194e74b6ed43a6bd, type: 3}
+  m_Name: DescriptionStorage
+  m_EditorClassIdentifier: 
+  imageDescriptions:
+  - modelName: aa6
+    modelDecription: sama desheva no vseondno dorogo
+    sprite: {fileID: 21300000, guid: 02776b169139d0040b6ecfd776f3ca83, type: 3}
+  - modelName: ars6
+    modelDecription: ya hochy taky mashuny
+    sprite: {fileID: 21300000, guid: 3a41512d94e499b42b082d28b221e173, type: 3}
+  - modelName: ars7
+    modelDecription: lya yaka garna mashuna
+    sprite: {fileID: 21300000, guid: 5d310a4ec810bee48a5ff04d775e8e7f, type: 3}
+  - modelName: q8rs
+    modelDecription: parketnik - ne mashuna
+    sprite: {fileID: 21300000, guid: ab9fe2737541d87448a83261c605485e, type: 3}

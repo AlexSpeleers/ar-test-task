@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
+  m_Name: AddressableAssetSettings
+  m_EditorClassIdentifier: 
+  m_DefaultGroup: 60298bcce80d8ba489cdc653821d11b3
+  m_OptimizeCatalogSize: 0
+  m_BuildRemoteCatalog: 1
+  m_BundleLocalCatalog: 0
+  m_DisableCatalogUpdateOnStart: 0
+  m_IgnoreUnsupportedFilesInBuild: 0
+  m_UniqueBundleIds: 0
+  m_maxConcurrentWebRequests: 500
+  m_ContiguousBundles: 0
+  m_RemoteCatalogBuildPath:
+    m_Id: 45b30129405a80d42bed5c4d753ea132
+  m_RemoteCatalogLoadPath:
+    m_Id: 0a53dd8eab38a544292b1abf536de321
+  m_overridePlayerVersion: 
+  m_GroupAssets:
+  - {fileID: 11400000, guid: 7bd0c9b50c19ea845af6b092753d9e1d, type: 2}
+  - {fileID: 11400000, guid: 5b3e035d89389d144b2e91713b5a800a, type: 2}
+  - {fileID: 11400000, guid: 9b593b528bf57b1448f71d886cebc1c0, type: 2}
+  m_BuildSettings:
+    m_CompileScriptsInVirtualMode: 0
+    m_CleanupStreamingAssetsAfterBuilds: 1
+    m_LogResourceManagerExceptions: 1
+    m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
+  m_ProfileSettings:
+    m_Profiles:
+    - m_InheritedParent: 
+      m_Id: bc8b155c41eaaf940a8d510d5b1260df
+      m_ProfileName: Default
+      m_Values:
+      - m_Id: 9fb5f1b57ac176141905befede670572
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: f99ee28f2d094504fa41bd72972ded0c
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: 1978d540fe811574eb59940935100486
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 45b30129405a80d42bed5c4d753ea132
+        m_Value: ServerData/[BuildTarget]
+      - m_Id: 0a53dd8eab38a544292b1abf536de321
+        m_Value: https://storage.googleapis.com/tsukat/[BuildTarget]
+    m_ProfileEntryNames:
+    - m_Id: 9fb5f1b57ac176141905befede670572
+      m_Name: BuildTarget
+      m_InlineUsage: 0
+    - m_Id: f99ee28f2d094504fa41bd72972ded0c
+      m_Name: LocalBuildPath
+      m_InlineUsage: 0
+    - m_Id: 1978d540fe811574eb59940935100486
+      m_Name: LocalLoadPath
+      m_InlineUsage: 0
+    - m_Id: 45b30129405a80d42bed5c4d753ea132
+      m_Name: RemoteBuildPath
+      m_InlineUsage: 0
+    - m_Id: 0a53dd8eab38a544292b1abf536de321
+      m_Name: RemoteLoadPath
+      m_InlineUsage: 0
+    m_ProfileVersion: 1
+  m_LabelTable:
+    m_LabelNames:
+    - default
+    - Audi
+    - AudiStorage
+  m_SchemaTemplates: []
+  m_GroupTemplateObjects:
+  - {fileID: 11400000, guid: 26bf757297b5e4b40ac01a6555ba65b7, type: 2}
+  m_InitializationObjects: []
+  m_CertificateHandlerType:
+    m_AssemblyName: 
+    m_ClassName: 
+  m_ActivePlayerDataBuilderIndex: 3
+  m_DataBuilders:
+  - {fileID: 11400000, guid: 1f0878820f3a5fb46a58fd3f2307bf70, type: 2}
+  - {fileID: 11400000, guid: e96619aae0d3cf2429d2a9bce6cef5c5, type: 2}
+  - {fileID: 11400000, guid: 7746d72356916c249b9a9aae6c333b50, type: 2}
+  - {fileID: 11400000, guid: 2e67e883c03a733428e95464e2ca1b3b, type: 2}
+  m_ActiveProfileId: bc8b155c41eaaf940a8d510d5b1260df
+  m_HostingServicesManager:
+    m_HostingServiceInfos: []
+    m_Settings: {fileID: 11400000}
+    m_NextInstanceId: 0
+    m_RegisteredServiceTypeRefs: []

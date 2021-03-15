@@ -8,16 +8,17 @@ namespace Assets.Scripts.Data
 	{
 		[SerializeField] private List<ImageDescription> imageDescriptions = default;
 		public List<ImageDescription> ImageDescriptions => imageDescriptions;
+		public string GetPathByModelName(string name) => imageDescriptions.Find(x => x.ModelName == name).Path;
 	}
 
 	[System.Serializable]
 	public class ImageDescription 
 	{
-		[SerializeField] private string modelName = "";
-		[SerializeField] private string modelDecription = "";
-		[SerializeField] private Sprite sprite = default;
+		[SerializeField] private string modelName;
+		[SerializeField] private string modelDecription;
+		[SerializeField] private string path;
 		public string ModelName => modelName;
 		public string ModelDescription => modelDecription;
-		public Sprite Sprite => sprite;
+		public string Path => path;
 	}
 }

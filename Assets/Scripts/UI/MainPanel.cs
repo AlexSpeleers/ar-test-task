@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Data;
 using Assets.Scripts.Infrastructure.Factory;
+using Assets.Scripts.Infrastructure.Logic;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,23 +14,16 @@ namespace Assets.Scripts.UI
 		private ImageDescriptionStorage imageDescriptionStorage = default;
 		private IFactory factory = default;
 		private Camera cashedCam = default;
+		private EasyARDTO easyARDTO = default;
 		private void Awake()
 		{
 			cashedCam = Camera.main;
 		}
-		public void Construct(IFactory factory)
+		public void Construct(IFactory factory, EasyARDTO easyARDTO)
 		{
 			this.factory = factory;
+			this.easyARDTO = easyARDTO;
 			PrepareButtons();
-		}
-
-		public void CreateTargets(string model, string description)
-		{
-			for (int i = 0; i < 5; i++)
-			{
-				var target = factory.CreateImageTarget();
-				imageTargetDTOs.Add(target);
-			}
 		}
 
 		private void PrepareButtons() 
@@ -41,27 +35,35 @@ namespace Assets.Scripts.UI
 			});
 		}
 
-		private void Upload() 
+		private void Upload()
 		{
-			if (imageDescriptionStorage != null) 
+			if (Application.internetReachability != NetworkReachability.NotReachable)
 			{
-				PopulateTargets(imageDescriptionStorage);
+				if (imageDescriptionStorage != null)
+				{
+					PopulateTargets(imageDescriptionStorage);
+					DisableButton();
+					return;
+				}
+				DisableButton();
+				imageDescriptionStorage = factory.GetImageDescriptionStorage(PopulateTargets);
 			}
-			if (Application.internetReachability == NetworkReachability.NotReachable) 
-			{
-				return;
-			}
-			imageDescriptionStorage = factory.GetImageDescriptionStorage(PopulateTargets);
 		}
 
 		private void PopulateTargets(ImageDescriptionStorage imageDescriptionStorage) 
 		{
-			uploadButton.gameObject.SetActive(false);
+			if (imageDescriptionStorage == null) 
+			{
+				EnableButton();
+				return;
+			}
 			foreach (var image in imageDescriptionStorage.ImageDescriptions)
 			{
 				var target = factory.CreateImageTarget();
-				target.Construct(cashedCam, image.ModelDescription, image.ModelName);
+				target.Construct(cashedCam, image.ModelDescription, image.ModelName, image.Path, easyARDTO.ImageTracker);
 			}
 		}
+		private void DisableButton() => uploadButton.enabled= false;
+		private void EnableButton() => uploadButton.enabled = true;
 	}
 }

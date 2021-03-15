@@ -34,6 +34,9 @@ namespace Assets.Scripts.Infrastructure.States
 			services.RegisterSingle<IAssets>(new AssetProvider());
 			services.RegisterSingle<IFactory>(new AssetFactory(services.Single<IAssets>()));
 		}
-		private void EnterLoadLevel() => applicationStateMachine.Enter<LoadMainScene, string>(AplicationScene);
+		private void EnterLoadLevel() 
+		{
+			applicationStateMachine.Enter<LoadMainScene, string>(AplicationScene); 
+		}
 	}
 }

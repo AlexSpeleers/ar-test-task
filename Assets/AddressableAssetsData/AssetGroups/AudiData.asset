@@ -16,7 +16,43 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 7f86cecb1313ed34b85988cdfecbb813
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 980593b13e54d1c40a6c30b0e4cba447
+    m_Address: Assets/Scripts/Data/DescriptionStorage.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AudiStotage
+    - AudiStorage
+    m_MainAsset: {fileID: 11400000, guid: 980593b13e54d1c40a6c30b0e4cba447, type: 2}
+    m_TargetAsset: {fileID: 11400000, guid: 980593b13e54d1c40a6c30b0e4cba447, type: 2}
+  - m_GUID: 02776b169139d0040b6ecfd776f3ca83
+    m_Address: Assets/Sprites/aa6.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Audi
+    m_MainAsset: {fileID: 2800000, guid: 02776b169139d0040b6ecfd776f3ca83, type: 3}
+    m_TargetAsset: {fileID: 2800000, guid: 02776b169139d0040b6ecfd776f3ca83, type: 3}
+  - m_GUID: 3a41512d94e499b42b082d28b221e173
+    m_Address: Assets/Sprites/ars6.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Audi
+    m_MainAsset: {fileID: 2800000, guid: 3a41512d94e499b42b082d28b221e173, type: 3}
+    m_TargetAsset: {fileID: 2800000, guid: 3a41512d94e499b42b082d28b221e173, type: 3}
+  - m_GUID: 5d310a4ec810bee48a5ff04d775e8e7f
+    m_Address: Assets/Sprites/ars7.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Audi
+    m_MainAsset: {fileID: 2800000, guid: 5d310a4ec810bee48a5ff04d775e8e7f, type: 3}
+    m_TargetAsset: {fileID: 2800000, guid: 5d310a4ec810bee48a5ff04d775e8e7f, type: 3}
+  - m_GUID: ab9fe2737541d87448a83261c605485e
+    m_Address: Assets/Sprites/q8rs.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Audi
+    m_MainAsset: {fileID: 2800000, guid: ab9fe2737541d87448a83261c605485e, type: 3}
+    m_TargetAsset: {fileID: 2800000, guid: ab9fe2737541d87448a83261c605485e, type: 3}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 58fe6c808be074842a1b80f52e05d93f, type: 2}
   m_SchemaSet:

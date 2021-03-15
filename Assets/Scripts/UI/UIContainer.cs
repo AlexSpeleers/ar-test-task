@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Infrastructure.Factory;
+using Assets.Scripts.Infrastructure.Logic;
 using UnityEngine;
 
 namespace Assets.Scripts.UI
@@ -8,9 +9,9 @@ namespace Assets.Scripts.UI
 		[SerializeField] private MainPanel mainPanel = default;
 		public MainPanel MainPanel => mainPanel;
 
-		public void Construct(IFactory factory)
+		public void Construct(IFactory factory, EasyARDTO easyARDTO)
 		{
-			mainPanel.Construct(factory);
+			mainPanel.Construct(factory, easyARDTO);
 		}
 	}
 }

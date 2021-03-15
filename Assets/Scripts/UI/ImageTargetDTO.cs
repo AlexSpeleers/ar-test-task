@@ -22,10 +22,12 @@ namespace Assets.Scripts.UI
 			itc.TargetFound -= OnFound;
 			itc.TargetLost -= OnLost;
 		}
-		public void Construct(Camera cam, string model, string description, string path) 
+		public void Construct(Camera cam, string model, string description, string path, ImageTrackerFrameFilter imageTracker) 
 		{
 			canvas.worldCamera = cam;
 			itc.ImageFileSource.Path = path;
+			itc.name = model;
+			itc.Tracker = imageTracker;
 			SetValues(model, description);
 		}
 		public void SetValues(string model, string description) 

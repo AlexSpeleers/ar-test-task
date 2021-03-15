@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Data;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -11,8 +10,8 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 {
 	public class AssetProvider : IAssets
 	{
-		private List<string> imagePathes = default;
 		private ImageDescriptionStorage imageDescriptionStorage = default;
+
 		public GameObject Instantiate(string path)
 		{
 			var prefab = Resources.Load<GameObject>(path);
@@ -24,37 +23,43 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 			return Object.Instantiate(prefab, parent);
 		}
 
-		public async Task<ImageDescriptionStorage> DownloadAddresables(Action<ImageDescriptionStorage> callback)
+		public async Task<ImageDescriptionStorage> DownloadTargets(Action<ImageDescriptionStorage> callback)
 		{
-			if (imagePathes != null || imagePathes.Count > 0)
-			{
-				return imageDescriptionStorage;
-			}
-			
-			var locations1 = await Addressables.LoadResourceLocationsAsync(AssetPath.ImageLabel).Task;
+			var locations1 = await Addressables.LoadResourceLocationsAsync(AssetPath.SOLabel).Task;
 			foreach (var location in locations1)
 			{
-				var obj = await Addressables.LoadAssetAsync<Sprite>(location).Task;
-				using (StreamWriter sw = new StreamWriter($"{AssetPath.SaveImagePath}{obj.name}.jpg", false, System.Text.Encoding.Default))
+				var obj = await Addressables.LoadAssetAsync<ImageDescriptionStorage>(location).Task;
+				imageDescriptionStorage = obj;
+			}
+			var locations2 = await Addressables.LoadResourceLocationsAsync(AssetPath.ImageLabel).Task;
+			DirectoryInfo dir = new DirectoryInfo(Application.streamingAssetsPath);
+			if (dir.GetFiles().Length < locations2.Count) 
+			{
+				foreach(FileInfo file in dir.GetFiles())
 				{
-					var imagearray = obj.texture.EncodeToJPG();
-					
+					file.Delete();
+				}
+				for (int i = 0; i < locations2.Count; i++)
+				{
+					var obj = await Addressables.LoadAssetAsync<Sprite>(locations2[i]).Task;
+					var imageArray = obj.texture.EncodeToJPG();
+					SaveBytesToFile($"{Application.streamingAssetsPath}{imageDescriptionStorage.GetPathByModelName(obj.name)}", imageArray);
 				}
 			}
-
-			var locations2 = await Addressables.LoadResourceLocationsAsync(AssetPath.SOLabel).Task;
-			foreach (var location in locations2)
-			{
-				var obj = await Addressables.LoadAssetAsync<ImageDescriptionStorage>(location).Task;
-				imageDescriptionStorages.Add(obj);
-			}
-			if (imageDescriptionStorages != null || imageDescriptionStorages.Count > 0) 
-			{
-				callback?.Invoke(imageDescriptionStorages[0]);
-			}
-			return  imageDescriptionStorages[0];
+			return imageDescriptionStorage;
 		}
 
+		public void SaveBytesToFile(string filename, byte[] bytesToWrite)
+		{
+			if (filename != null && filename.Length > 0 && bytesToWrite != null)
+			{
+				if (!Directory.Exists(Path.GetDirectoryName(filename)))
+					Directory.CreateDirectory(Path.GetDirectoryName(filename));
+				FileStream file = File.Create(filename);
+				file.Write(bytesToWrite, 0, bytesToWrite.Length);
+				file.Close();
+			}
+		}
 
 		public void Dispose()
 		{

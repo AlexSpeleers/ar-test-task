@@ -1,7 +1,5 @@
 ﻿using Assets.Scripts.Infrastructure.Factory;
-using Assets.Scripts.Services;
 using Assets.Scripts.UI;
-using System;
 
 namespace Assets.Scripts.Infrastructure.States
 {

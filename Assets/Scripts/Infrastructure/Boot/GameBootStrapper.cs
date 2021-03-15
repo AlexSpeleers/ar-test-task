@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Infrastructure;
+using Assets.Scripts.Infrastructure.States;
 using Assets.Scripts.UI;
 using UnityEngine;
 namespace Assets.Scripts.Boot
@@ -10,6 +11,8 @@ namespace Assets.Scripts.Boot
 		private void Awake()
 		{
 			aRapplication = new ARapplication(this, Instantiate(LoadingCurtainPrefab));
+			aRapplication.StateMachine.Enter<BootstrapState>();
+			DontDestroyOnLoad(this);
 		}
 	}
 }

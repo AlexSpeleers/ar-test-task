@@ -46,12 +46,13 @@ namespace Assets.Scripts.UI
 					return;
 				}
 				DisableButton();
-				imageDescriptionStorage = factory.GetImageDescriptionStorage(PopulateTargets);
+				factory.GetImageDescriptionStorage(PopulateTargets);
 			}
 		}
 
 		private void PopulateTargets(ImageDescriptionStorage imageDescriptionStorage) 
 		{
+			this.imageDescriptionStorage = imageDescriptionStorage;
 			if (imageDescriptionStorage == null) 
 			{
 				EnableButton();
@@ -62,6 +63,7 @@ namespace Assets.Scripts.UI
 				var target = factory.CreateImageTarget();
 				target.Construct(cashedCam, image.ModelDescription, image.ModelName, image.Path, easyARDTO.ImageTracker);
 			}
+			Debug.Log(imageDescriptionStorage.ImageDescriptions.Count);
 		}
 		private void DisableButton() => uploadButton.enabled= false;
 		private void EnableButton() => uploadButton.enabled = true;

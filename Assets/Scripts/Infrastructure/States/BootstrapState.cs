@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Infrastructure.AssetManagment;
 using Assets.Scripts.Infrastructure.Factory;
+using Assets.Scripts.Infrastructure.ThreadDispatcher;
 using Assets.Scripts.Services;
 
 namespace Assets.Scripts.Infrastructure.States
@@ -11,12 +12,14 @@ namespace Assets.Scripts.Infrastructure.States
 		private readonly ApplicationStateMachine applicationStateMachine = default;
 		private readonly SceneLoader sceneLoader = default;
 		private readonly AllServices services = default;
+		private readonly IDispatcher dispatcher = default;
 
-		public BootstrapState(ApplicationStateMachine applicationStateMachine, SceneLoader sceneLoader, AllServices services)
+		public BootstrapState(ApplicationStateMachine applicationStateMachine, SceneLoader sceneLoader, AllServices services, IDispatcher dispatcher)
 		{
 			this.applicationStateMachine = applicationStateMachine;
 			this.sceneLoader = sceneLoader;
 			this.services = services;
+			this.dispatcher = dispatcher;
 			RegisterServices();
 		}
 
@@ -31,7 +34,8 @@ namespace Assets.Scripts.Infrastructure.States
 		}
 		private void RegisterServices()
 		{
-			services.RegisterSingle<IAssets>(new AssetProvider());
+			services.RegisterSingle(dispatcher);
+			services.RegisterSingle<IAssets>(new AssetProvider(services.Single<IDispatcher>()));
 			services.RegisterSingle<IFactory>(new AssetFactory(services.Single<IAssets>()));
 		}
 		private void EnterLoadLevel() 

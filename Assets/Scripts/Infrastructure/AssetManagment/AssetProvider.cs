@@ -5,14 +5,18 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Object = UnityEngine.Object;
 using System.IO;
-using System.Collections.Generic;
-using UnityEngine.ResourceManagement.ResourceLocations;
+using Assets.Scripts.Infrastructure.ThreadDispatcher;
 
 namespace Assets.Scripts.Infrastructure.AssetManagment
 {
 	public class AssetProvider : IAssets
 	{
+		private IDispatcher dispatcher = default;
 		private ImageDescriptionStorage imageDescriptionStorage = default;
+		public AssetProvider(IDispatcher dispatcher)
+		{
+			this.dispatcher = dispatcher;
+		}
 
 		public GameObject Instantiate(string path)
 		{
@@ -25,18 +29,17 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 			return Object.Instantiate(prefab, parent);
 		}
 
-		public async Task<ImageDescriptionStorage> DownloadTargets(Action<ImageDescriptionStorage> callback)
+		public async Task DownloadTargets(Action<ImageDescriptionStorage> callback)
 		{
-			imageDescriptionStorage = GetStorage(AssetPath.SOLabel).Result;
+			await GetStorage(AssetPath.SOLabel);
 			await GetImages(AssetPath.ImageLabel);
-			callback?.Invoke(imageDescriptionStorage);
-			return imageDescriptionStorage;
+			dispatcher.AddInvoke(callback, imageDescriptionStorage);
 		}
-		public async Task<ImageDescriptionStorage> GetStorage(string label)
+		public async Task GetStorage(string label)
 		{
 			var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
 			var obj = await Addressables.LoadAssetAsync<ImageDescriptionStorage>(locations[0]).Task;
-			return obj;
+			imageDescriptionStorage = obj;
 		}
 		public async Task GetImages(string label) 
 		{

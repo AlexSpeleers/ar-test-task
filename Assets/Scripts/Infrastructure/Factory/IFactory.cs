@@ -9,6 +9,6 @@ namespace Assets.Scripts.Infrastructure.Factory
 	{
 		void CreateCanvas();
 		ImageTargetDTO CreateImageTarget();
-		ImageDescriptionStorage GetImageDescriptionStorage(Action<ImageDescriptionStorage> callback);
+		void GetImageDescriptionStorage(Action<ImageDescriptionStorage> callback);
 	}
 }

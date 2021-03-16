@@ -1,5 +1,6 @@
 ﻿
 using Assets.Scripts.Infrastructure.Factory;
+using Assets.Scripts.Infrastructure.ThreadDispatcher;
 using Assets.Scripts.Services;
 using Assets.Scripts.UI;
 using System;
@@ -11,11 +12,11 @@ namespace Assets.Scripts.Infrastructure.States
 	{
 		private readonly Dictionary<Type, IExitableState> states;
 		private IExitableState activeState;
-		public ApplicationStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, AllServices services)
+		public ApplicationStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, AllServices services, IDispatcher dispatcher)
 		{
 			states = new Dictionary<Type, IExitableState>()
 			{
-				[typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
+				[typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services, dispatcher),
 				[typeof(LoadMainScene)] = new LoadMainScene(this, sceneLoader, loadingCurtain, services.Single<IFactory>()),
 				[typeof(GameLoopState)] = new GameLoopState(this)
 			};

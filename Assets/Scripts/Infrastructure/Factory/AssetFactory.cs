@@ -24,9 +24,9 @@ namespace Assets.Scripts.Infrastructure.Factory
 			return assets.Instantiate(AssetPath.ImageTarget).GetComponent<ImageTargetDTO>();
 		}
 
-		public ImageDescriptionStorage GetImageDescriptionStorage(Action<ImageDescriptionStorage> callback) 
+		public void GetImageDescriptionStorage(Action<ImageDescriptionStorage> callback) 
 		{
-			return assets.DownloadTargets(callback).Result;
+			assets.DownloadTargets(callback);
 		}
 		private EasyARDTO CreateImageTracker()
 		{

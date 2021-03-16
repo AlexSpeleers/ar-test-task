@@ -7,14 +7,14 @@ namespace Assets.Scripts.Infrastructure.ThreadDispatcher
 {
 	public class Dispatcher : MonoBehaviour, IDispatcher
 	{
-		private List<Action<ImageDescriptionStorage>> pending = new List<Action<ImageDescriptionStorage>>();
-		private List<ImageDescriptionStorage> desriptions = new List<ImageDescriptionStorage>();
+		private Queue<Action<ImageDescriptionStorage>> pending = new Queue<Action<ImageDescriptionStorage>>();
+		private Queue<ImageDescriptionStorage> desriptions = new Queue<ImageDescriptionStorage>();
 
 		public void AddInvoke(Action<ImageDescriptionStorage> fn, ImageDescriptionStorage imageDescription)
 		{
 			lock (this.pending)
 			{
-				this.pending.Add(fn);
+				this.pending.Enqueue(fn);
 			}
 		}
 
@@ -22,12 +22,11 @@ namespace Assets.Scripts.Infrastructure.ThreadDispatcher
 		{
 			lock (this.pending)
 			{
-				for (int i = 0; i < pending.Count; i++)
+				if (pending.Count > 0)
 				{
-					var action = pending[i];
-					action(desriptions[i]);
+					var action = pending.Dequeue();
+					action(desriptions.Dequeue());
 				}
-				this.pending.Clear();
 			}
 		}
 

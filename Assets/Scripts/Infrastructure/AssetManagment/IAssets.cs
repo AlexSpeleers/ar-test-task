@@ -10,6 +10,6 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 	{
 		GameObject Instantiate(string path);
 		GameObject Instantiate(string path, Transform parent);
-		Task DownloadTargets(Action<ImageDescriptionStorage> callback);
+		void DownloadTargets(Action<ImageDescriptionStorage> callback);
 	}
 }

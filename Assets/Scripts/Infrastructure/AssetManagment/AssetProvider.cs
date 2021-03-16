@@ -29,19 +29,22 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 			return Object.Instantiate(prefab, parent);
 		}
 
-		public async Task DownloadTargets(Action<ImageDescriptionStorage> callback)
+		public void DownloadTargets(Action<ImageDescriptionStorage> callback) 
 		{
-			await GetStorage(AssetPath.SOLabel);
-			await GetImages(AssetPath.ImageLabel);
-			dispatcher.AddInvoke(callback, imageDescriptionStorage);
+			Task.Run(async () =>
+			{
+				await GetStorage(AssetPath.SOLabel);
+				await GetImages(AssetPath.ImageLabel);
+				dispatcher.AddInvoke(callback, imageDescriptionStorage);
+			});
 		}
-		public async Task GetStorage(string label)
+		private async Task GetStorage(string label)
 		{
 			var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
 			var obj = await Addressables.LoadAssetAsync<ImageDescriptionStorage>(locations[0]).Task;
 			imageDescriptionStorage = obj;
 		}
-		public async Task GetImages(string label) 
+		private async Task GetImages(string label) 
 		{
 			var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
 			DirectoryInfo dir = new DirectoryInfo(Application.streamingAssetsPath);

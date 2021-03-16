@@ -4,6 +4,7 @@ using Assets.Scripts.Infrastructure.Logic;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.Infrastructure.AssetManagment;
 
 namespace Assets.Scripts.UI
 {
@@ -70,7 +71,7 @@ namespace Assets.Scripts.UI
 				foreach (var image in imageDescriptionStorage.ImageDescriptions)
 				{
 					var target = factory.CreateImageTarget();
-					target.Construct(cashedCam, image.ModelName, image.ModelDescription, image.Path, easyARDTO.ImageTracker);
+					target.Construct(cashedCam, image.ModelName, image.ModelDescription, $"{Application.persistentDataPath}{AssetPath.ImageDirectory}/{image.Path}", easyARDTO.ImageTracker);
 					imageTargetDTOs.Add(target);
 				}
 			}

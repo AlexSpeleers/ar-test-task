@@ -62,7 +62,9 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 		private void ImageLocationLoaded(AsyncOperationHandle<IList<IResourceLocation>> obj) 
 		{
 			remotes = new List<IResourceLocation>(obj.Result);
-			DirectoryInfo dir = new DirectoryInfo(Application.streamingAssetsPath);
+			if (!Directory.Exists(Path.GetDirectoryName($"{Application.persistentDataPath}{AssetPath.ImageDirectory}/sss")))
+				Directory.CreateDirectory($"{Application.persistentDataPath}{AssetPath.ImageDirectory}");
+			DirectoryInfo dir = new DirectoryInfo($"{Application.persistentDataPath}{AssetPath.ImageDirectory}");
 			if (dir.GetFiles().Length < remotes.Count)
 			{
 				foreach (FileInfo file in dir.GetFiles())
@@ -84,7 +86,7 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 			assetCounter++;
 			var image = resource.Result;
 			var imageArray = image.EncodeToJPG();
-			SaveBytesToFile($"{Application.streamingAssetsPath}/{imageDescriptionStorage.GetPathByModelName(image.name)}", imageArray);
+			SaveBytesToFile($"{Application.persistentDataPath}{AssetPath.ImageDirectory}/{imageDescriptionStorage.GetPathByModelName(image.name)}", imageArray);
 			if (assetCounter == imageDescriptionStorage.ImageDescriptions.Count - 1)
 			{
 				dispatcher.AddInvoke(callback, imageDescriptionStorage);

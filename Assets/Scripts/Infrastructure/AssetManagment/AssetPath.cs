@@ -7,5 +7,6 @@
 		public const string EasyARTrracker = "Prefabs/EasyAR Variant";
 		public const string ImageLabel = "Audi";
 		public const string SOLabel = "AudiStorage";
+		public const string ImageDirectory = "/Images";
 	}
 }

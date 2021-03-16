@@ -22,7 +22,7 @@ namespace Assets.Scripts.UI
 			itc.TargetFound -= OnFound;
 			itc.TargetLost -= OnLost;
 		}
-		public void Construct(Camera cam, string model, string description, string path, ImageTrackerFrameFilter imageTracker) 
+		public void Construct(Camera cam, string model, string description, string path, ImageTrackerFrameFilter imageTracker)
 		{
 			canvas.worldCamera = cam;
 			itc.ImageFileSource.Path = path;
@@ -31,12 +31,18 @@ namespace Assets.Scripts.UI
 			SetValues(model, description);
 			itc.enabled = true;
 		}
-		public void SetValues(string model, string description) 
+		public void SetValues(string model, string description)
 		{
 			modelTXT.text = model;
 			this.description.text = description;
 		}
-		private void OnFound() => canvas.enabled = true;
-		private void OnLost() => canvas.enabled = false;
+		private void OnFound()
+		{
+			canvas.enabled = true;
+		}
+		private void OnLost()
+		{
+			canvas.enabled = false;
+		}
 	}
 }

@@ -92,8 +92,6 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 		}
 		public void SaveBytesToFile(string filename, byte[] bytesToWrite)
 		{
-			Debug.Log(filename + " = filename");
-			Debug.Log(Path.GetDirectoryName(filename) + " = dirrectory name");
 			if (filename != null && filename.Length > 0 && bytesToWrite != null)
 			{
 				if (!Directory.Exists(Path.GetDirectoryName(filename)))

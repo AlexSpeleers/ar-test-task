@@ -24,8 +24,15 @@ namespace Assets.Scripts.UI
 			this.factory = factory;
 			this.easyARDTO = easyARDTO;
 			PrepareButtons();
+			SetUpEaseARSession();
 		}
 
+		private void SetUpEaseARSession() 
+		{
+			easyARDTO.RenderCameraController.TargetCamera = cashedCam;
+			easyARDTO.ARSession.Assembly.Camera = cashedCam;
+			easyARDTO.ARSession.Assembly.CameraRoot = cashedCam.transform;
+		}
 		private void PrepareButtons() 
 		{
 			uploadButton.onClick.RemoveAllListeners();
@@ -53,18 +60,22 @@ namespace Assets.Scripts.UI
 		private void PopulateTargets(ImageDescriptionStorage imageDescriptionStorage) 
 		{
 			this.imageDescriptionStorage = imageDescriptionStorage;
-			if (imageDescriptionStorage == null) 
+			if (imageDescriptionStorage == null)
 			{
 				EnableButton();
-				return;
 			}
-			foreach (var image in imageDescriptionStorage.ImageDescriptions)
+			else
 			{
-				var target = factory.CreateImageTarget();
-				target.Construct(cashedCam, image.ModelName, image.ModelDescription, image.Path, easyARDTO.ImageTracker);
+				easyARDTO.ImageTracker.SimultaneousNum = imageDescriptionStorage.ImageDescriptions.Count;
+				foreach (var image in imageDescriptionStorage.ImageDescriptions)
+				{
+					var target = factory.CreateImageTarget();
+					target.Construct(cashedCam, image.ModelName, image.ModelDescription, image.Path, easyARDTO.ImageTracker);
+					imageTargetDTOs.Add(target);
+				}
 			}
 		}
-		private void DisableButton() => uploadButton.enabled= false;
-		private void EnableButton() => uploadButton.enabled = true;
+		private void DisableButton() => uploadButton.gameObject.SetActive(false);
+		private void EnableButton() => uploadButton.gameObject.SetActive(true);
 	}
 }

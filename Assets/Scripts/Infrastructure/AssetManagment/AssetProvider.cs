@@ -6,13 +6,19 @@ using UnityEngine.AddressableAssets;
 using Object = UnityEngine.Object;
 using System.IO;
 using Assets.Scripts.Infrastructure.ThreadDispatcher;
+using System.Collections.Generic;
+using UnityEngine.ResourceManagement.ResourceLocations;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Assets.Scripts.Infrastructure.AssetManagment
 {
 	public class AssetProvider : IAssets
 	{
+		private List<IResourceLocation> remotes;
 		private IDispatcher dispatcher = default;
 		private ImageDescriptionStorage imageDescriptionStorage = default;
+		private Action<ImageDescriptionStorage> callback = default;
+		private int assetCounter = 0;
 		public AssetProvider(IDispatcher dispatcher)
 		{
 			this.dispatcher = dispatcher;
@@ -31,39 +37,63 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 
 		public void DownloadTargets(Action<ImageDescriptionStorage> callback) 
 		{
-			Task.Run(async () =>
-			{
-				await GetStorage(AssetPath.SOLabel);
-				await GetImages(AssetPath.ImageLabel);
-				dispatcher.AddInvoke(callback, imageDescriptionStorage);
-			});
+			assetCounter = 0;
+			this.callback = callback;
+			GetStorage(AssetPath.SOLabel);
 		}
-		private async Task GetStorage(string label)
+		private void GetStorage(string label)
 		{
-			var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
-			var obj = await Addressables.LoadAssetAsync<ImageDescriptionStorage>(locations[0]).Task;
-			imageDescriptionStorage = obj;
+			Addressables.LoadResourceLocationsAsync(label).Completed += LocationLoaded;
 		}
-		private async Task GetImages(string label) 
+		private void LocationLoaded(AsyncOperationHandle<IList<IResourceLocation>> obj) 
 		{
-			var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
+			remotes = new List<IResourceLocation>(obj.Result);
+			Addressables.LoadAssetAsync<ImageDescriptionStorage>(remotes[0]).Completed += StorageAssetLoaded;
+		}
+		private void StorageAssetLoaded(AsyncOperationHandle<ImageDescriptionStorage> resource) 
+		{
+			imageDescriptionStorage = resource.Result;
+			GetImages(AssetPath.ImageLabel);
+		}
+		private void GetImages(string label) 
+		{
+			Addressables.LoadResourceLocationsAsync(label).Completed += ImageLocationLoaded;
+		}
+		private void ImageLocationLoaded(AsyncOperationHandle<IList<IResourceLocation>> obj) 
+		{
+			remotes = new List<IResourceLocation>(obj.Result);
 			DirectoryInfo dir = new DirectoryInfo(Application.streamingAssetsPath);
-			if (dir.GetFiles().Length < locations.Count)
+			if (dir.GetFiles().Length < remotes.Count)
 			{
 				foreach (FileInfo file in dir.GetFiles())
 				{
 					file.Delete();
 				}
-				for (int i = 0; i < locations.Count; i++)
+				for (int i = 0; i < remotes.Count; i++)
 				{
-					var obj = await Addressables.LoadAssetAsync<Sprite>(locations[i]).Task;
-					var imageArray = obj.texture.EncodeToJPG();
-					SaveBytesToFile($"{Application.streamingAssetsPath}{imageDescriptionStorage.GetPathByModelName(obj.name)}", imageArray);
+					Addressables.LoadAssetAsync<Texture2D>(remotes[i]).Completed += ImageAssetloaded;
 				}
+			}
+			else 
+			{
+				dispatcher.AddInvoke(callback, imageDescriptionStorage);
+			}
+		}
+		private void ImageAssetloaded(AsyncOperationHandle<Texture2D> resource)
+		{
+			assetCounter++;
+			var image = resource.Result;
+			var imageArray = image.EncodeToJPG();
+			SaveBytesToFile($"{Application.streamingAssetsPath}/{imageDescriptionStorage.GetPathByModelName(image.name)}", imageArray);
+			if (assetCounter == imageDescriptionStorage.ImageDescriptions.Count - 1)
+			{
+				dispatcher.AddInvoke(callback, imageDescriptionStorage);
 			}
 		}
 		public void SaveBytesToFile(string filename, byte[] bytesToWrite)
 		{
+			Debug.Log(filename + " = filename");
+			Debug.Log(Path.GetDirectoryName(filename) + " = dirrectory name");
 			if (filename != null && filename.Length > 0 && bytesToWrite != null)
 			{
 				if (!Directory.Exists(Path.GetDirectoryName(filename)))

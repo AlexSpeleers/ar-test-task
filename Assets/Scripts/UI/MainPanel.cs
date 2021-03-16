@@ -61,9 +61,8 @@ namespace Assets.Scripts.UI
 			foreach (var image in imageDescriptionStorage.ImageDescriptions)
 			{
 				var target = factory.CreateImageTarget();
-				target.Construct(cashedCam, image.ModelDescription, image.ModelName, image.Path, easyARDTO.ImageTracker);
+				target.Construct(cashedCam, image.ModelName, image.ModelDescription, image.Path, easyARDTO.ImageTracker);
 			}
-			Debug.Log(imageDescriptionStorage.ImageDescriptions.Count);
 		}
 		private void DisableButton() => uploadButton.enabled= false;
 		private void EnableButton() => uploadButton.enabled = true;

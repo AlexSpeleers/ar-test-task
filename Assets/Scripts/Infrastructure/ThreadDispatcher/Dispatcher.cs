@@ -15,6 +15,7 @@ namespace Assets.Scripts.Infrastructure.ThreadDispatcher
 			lock (this.pending)
 			{
 				this.pending.Enqueue(fn);
+				this.desriptions.Enqueue(imageDescription);
 			}
 		}
 
@@ -22,7 +23,7 @@ namespace Assets.Scripts.Infrastructure.ThreadDispatcher
 		{
 			lock (this.pending)
 			{
-				if (pending.Count > 0)
+				if (pending.Count > 0 && desriptions.Count > 0)
 				{
 					var action = pending.Dequeue();
 					action(desriptions.Dequeue());

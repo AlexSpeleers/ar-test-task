@@ -26,9 +26,10 @@ namespace Assets.Scripts.UI
 		{
 			canvas.worldCamera = cam;
 			itc.ImageFileSource.Path = path;
-			itc.name = model;
+			itc.ImageFileSource.Name = model;
 			itc.Tracker = imageTracker;
 			SetValues(model, description);
+			itc.enabled = true;
 		}
 		public void SetValues(string model, string description) 
 		{

@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Object = UnityEngine.Object;
 using System.IO;
+using System.Collections.Generic;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace Assets.Scripts.Infrastructure.AssetManagment
 {
@@ -25,31 +27,35 @@ namespace Assets.Scripts.Infrastructure.AssetManagment
 
 		public async Task<ImageDescriptionStorage> DownloadTargets(Action<ImageDescriptionStorage> callback)
 		{
-			var locations1 = await Addressables.LoadResourceLocationsAsync(AssetPath.SOLabel).Task;
-			foreach (var location in locations1)
-			{
-				var obj = await Addressables.LoadAssetAsync<ImageDescriptionStorage>(location).Task;
-				imageDescriptionStorage = obj;
-			}
-			var locations2 = await Addressables.LoadResourceLocationsAsync(AssetPath.ImageLabel).Task;
+			imageDescriptionStorage = GetStorage(AssetPath.SOLabel).Result;
+			await GetImages(AssetPath.ImageLabel);
+			callback?.Invoke(imageDescriptionStorage);
+			return imageDescriptionStorage;
+		}
+		public async Task<ImageDescriptionStorage> GetStorage(string label)
+		{
+			var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
+			var obj = await Addressables.LoadAssetAsync<ImageDescriptionStorage>(locations[0]).Task;
+			return obj;
+		}
+		public async Task GetImages(string label) 
+		{
+			var locations = await Addressables.LoadResourceLocationsAsync(label).Task;
 			DirectoryInfo dir = new DirectoryInfo(Application.streamingAssetsPath);
-			if (dir.GetFiles().Length < locations2.Count) 
+			if (dir.GetFiles().Length < locations.Count)
 			{
-				foreach(FileInfo file in dir.GetFiles())
+				foreach (FileInfo file in dir.GetFiles())
 				{
 					file.Delete();
 				}
-				for (int i = 0; i < locations2.Count; i++)
+				for (int i = 0; i < locations.Count; i++)
 				{
-					var obj = await Addressables.LoadAssetAsync<Sprite>(locations2[i]).Task;
+					var obj = await Addressables.LoadAssetAsync<Sprite>(locations[i]).Task;
 					var imageArray = obj.texture.EncodeToJPG();
 					SaveBytesToFile($"{Application.streamingAssetsPath}{imageDescriptionStorage.GetPathByModelName(obj.name)}", imageArray);
 				}
 			}
-			callback?.Invoke(imageDescriptionStorage);
-			return imageDescriptionStorage;
 		}
-
 		public void SaveBytesToFile(string filename, byte[] bytesToWrite)
 		{
 			if (filename != null && filename.Length > 0 && bytesToWrite != null)
